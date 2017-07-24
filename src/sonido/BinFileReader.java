@@ -28,9 +28,9 @@ public class BinFileReader {
     */
     
     
-    public static byte[] std_read(){
+    public static byte[] std_read(String fileName){
     // The name of the file to open.
-        String fileName = "C:/Audios/brownNoise_1hr_WAV-16B-signed.wav";
+        fileName = "C:/Audios/brownNoise_1hr_WAV-16B-signed.wav";
 
         byte[] buffer = new byte[1000];
         
