@@ -22,7 +22,7 @@ public class PrincipalSonido {
         
         public static void stopDispTiempo(long startTime){
         long difference = System.nanoTime() - startTime;
-        //Sytsem.out.println("Total execution time: "+String.format("%d min, %d sec",TimeUnit.NANOSECONDS.toHours(difference),TimeUnit.NANOSECONDS.toSeconds(difference) - TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+        System.out.println("Total exec. time: "+String.format("%d min, %d sec",TimeUnit.NANOSECONDS.toHours(difference),TimeUnit.NANOSECONDS.toSeconds(difference) - TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
         }
         
         
@@ -34,7 +34,7 @@ public class PrincipalSonido {
      */
     public static void main(String[] args) throws InterruptedException, IOException, WAVFileException {
         
-        for (int i = 0; i < 100; i++) {
+        //for (int i = 0; i < 10; i++) { //este for es las veces que hago el trabajo :P
         
         long startTime = PrincipalSonido.startMideTiempo();
             
@@ -46,14 +46,33 @@ public class PrincipalSonido {
     
         arreglobyte = csvr.leeHaciaUByte(urlcsv, separador);
         
+        String archivo_buffer = "C:/Audios/sspv/buffer_audio.dat";
+        
+        byte [] buffer_byte = new byte[102400];
+        
         //csvr.muestraDatos(arreglobyte);  //DEBUG
         
-        PlaybackSon.playLine(arreglobyte);
+         //creando buffer de audio ANTES de reproduccion
+         //duración de 3 seg, por tanto x=100
+        
+        //primero crear el lector
+        Array2BinFileWriter writer = new Array2BinFileWriter();
+        
+            for (int x = 0; x < 101; x++) {
+                Array2BinFileWriter.escribe(arreglobyte, archivo_buffer);
+            }
+          
+        buffer_byte=BinFileReader.std_read(archivo_buffer);
+            
+        
+        PlaybackSon.playLine(buffer_byte);
         
         //parametros de audio de archivo WAV
-         int sampleRate = 30000;		
-        double duration = 0.034133333333333333333;		
+        int sampleRate = 30000;		 //fs=30k
+        //usando L=N/fs, para L=3 seg, N=1024
+        double duration = 3; 		
         int bits = 8;
+        //calculando número de frames, usando numFrames = L*fs
 	long numFrames = (long)(duration * sampleRate);
         
         //para añadir fecha y hora al final del archivo
@@ -96,9 +115,11 @@ public class PrincipalSonido {
                         
         // Close the wavFile
 	escWAV.close();
-        
+       
+            //System.out.println("Iter #"+(i+1)+"\n");//para debug
+       
        stopDispTiempo(startTime);
-    } //del for
+    //} //del for
         
     }//fin de clase main
     

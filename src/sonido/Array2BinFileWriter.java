@@ -15,10 +15,12 @@ public class Array2BinFileWriter {
     Array2BinFileWriter.escribe(data);
   }//del main
     */
+    
+    String fileName = "C:/Audios/sspv/buffer_audio.dat";
 
-public static void escribe(byte[] data){
+public static void escribe(byte[] data, String fileName){
     try {
-      FileOutputStream file = new FileOutputStream("pic.dat");
+      FileOutputStream file = new FileOutputStream(fileName);
       for (int i = 0; i < data.length; i++)
         file.write(data[i]);
       file.close();
